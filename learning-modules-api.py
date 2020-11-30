@@ -14,13 +14,15 @@ api = Api(app)
 
 class LearningModules(Resource):
     def get(self):
-        query = "select * from Modules"
+        query = "select MID, Name from LM_Module"
         return {"data":"test"}
 
-class Quiz(Resource):
-    def get(self, quiz_id):
-        query = "select 
+class Content(Resource):
+    def get(self, module_id):
+        query = "select" 
+
 api.add_resource(LearningModules, "/modules")
+api.add_resource(Content, "/modules/content")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
