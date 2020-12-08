@@ -21,7 +21,7 @@ class LearningModules(Resource):
         cursor.execute(query)
         result = cursor.fetchall()
         cursor.close()
-        return json.dumps(result)
+        return json.loads(json.dumps(result))
 
 class Content(Resource):
     def get(self, module_id):
@@ -31,11 +31,11 @@ class Content(Resource):
         cursor.execute(query, (module_id,));
         result = cursor.fetchall()
         cursor.close()
-        return json.dumps(result)
+        return json.loads(json.dumps(result))
 
 
 api.add_resource(LearningModules, "/modules")
 api.add_resource(Content, "/modules/content/<int:module_id>")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host="0.0.0.0", port="5000")
