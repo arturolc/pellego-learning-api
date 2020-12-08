@@ -27,7 +27,7 @@ class Content(Resource):
     def get(self, module_id):
         query = ("select MID, Name, Tutorial from LM_Module where MID = %s")
         cursor = cnx.cursor(dictionary=True)
-        print(module_id)
+
         cursor.execute(query, (module_id,));
         result = cursor.fetchall()
         cursor.close()
