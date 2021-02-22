@@ -15,6 +15,15 @@ api = Api(app)
 
 class LearningModules(Resource):
     def get(self):
+        # do a simple query to check if MySQL connection is open
+        try:
+            cursor = cnx.cursor(dictionary=True)
+            cursor.execute("Select 1")
+            cursor.fetchall()
+            cursor.close()
+        except:
+            cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
+
         query = ("select MID, Name from LM_Module")
         cursor = cnx.cursor(dictionary=True)
 
@@ -25,6 +34,15 @@ class LearningModules(Resource):
 
 class Content(Resource):
     def get(self, module_id):
+        # do a simple query to check if MySQL connection is open
+        try:
+            cursor = cnx.cursor(dictionary=True)
+            cursor.execute("Select 1")
+            cursor.fetchall()
+            cursor.close()
+        except:
+            cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
+            
         query = ("select MID, Name, Tutorial from LM_Module where MID = %s")
         cursor = cnx.cursor(dictionary=True)
 
