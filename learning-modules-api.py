@@ -32,8 +32,11 @@ class LearningModules(Resource):
         cursor.close()
         return json.loads(json.dumps(result))
 
-class Content(Resource):
-    def get(self, module_id):
+
+#Get the Learning module description from a name
+#TODO rename to Description
+class Description(Resource):
+    def get(self, Name):
         # do a simple query to check if MySQL connection is open
         try:
             cursor = cnx.cursor(dictionary=True)
@@ -43,17 +46,38 @@ class Content(Resource):
         except:
             cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
             
-        query = ("select MID, Name, Tutorial from LM_Module where MID = %s")
+        query = ("select Description from LM_Module where Name=%s")
         cursor = cnx.cursor(dictionary=True)
 
-        cursor.execute(query, (module_id,))
+        cursor.execute(query, (Name,))
+        result = cursor.fetchall()
+        cursor.close()
+        return json.loads(json.dumps(result))
+
+#Get the introduction module based on the learning module name
+class Intro(Resoure):
+      def get(self, Name):
+           try:
+            cursor = cnx.cursor(dictionary=True)
+            cursor.execute("Select 1")
+            cursor.fetchall()
+            cursor.close()
+        except:
+            cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
+            
+        query = ("Select Header, Content from LM_Intro natural join LM_Module where Name=%s")
+        cursor = cnx.cursor(dictionary=True)
+
+        cursor.execute(query, (Name,))
         result = cursor.fetchall()
         cursor.close()
         return json.loads(json.dumps(result))
 
 
 api.add_resource(LearningModules, "/modules")
-api.add_resource(Content, "/modules/content/<int:module_id>")
+api.add_resource(Description, "/modules/content/<string:Name>")
+api.add_resource(Intro, "/modules/intro/<string:Name>")
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
