@@ -93,8 +93,8 @@ class LearningModules(Resource):
         reconnect()
         
         cursor = cnx.cursor(dictionary=True)
-        cursor.execute(("select UID from Users where Email = %s"), res['email'])
-        userID = int(cursor.fetchall()['UID'])
+        cursor.execute(("select UID from Users where Email = %s"), (res['email'],))
+        userID = int(cursor.fetchall()[0]['UID'])
         cursor.close()
 
         cursor = cnx.cursor(dictionary=True)
@@ -104,12 +104,12 @@ class LearningModules(Resource):
         
         for item in result:
             cursor = cnx.cursor()
-            cursor.execute(("select count(*) from Progress where UID = %s and MID = %s"), (userID, int(item['MID'])))
+            cursor.execute(("select count(*) from ProgressCompleted where UID = %s and MID = %s"), (userID, int(item['MID'])))
             item["completed"] =  cursor.fetchall()
             cursor.close()
 
             cursor = cnx.cursor()
-            cursor.execute(("select count(*) from LM_Submodule where MID = %s"), (int(item['MID'])))
+            cursor.execute(("select count(*) from LM_Submodule where MID = %s"), (int(item['MID']),))
             item["totalSubmodules"] = cursor.fetchall()
             cursor.close()
             
