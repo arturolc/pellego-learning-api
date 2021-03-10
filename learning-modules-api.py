@@ -85,17 +85,34 @@ parser = reqparse.RequestParser()
 class LearningModules(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        res = verifyToken(json_data['token'])
+        
+        res = verifyToken(json_data['token'])        
         if res is False:
             return "401 Unathorized", 401
-
+        
         reconnect()
-        query = ("select MID, Name from LM_Module")
+        
         cursor = cnx.cursor(dictionary=True)
+        cursor.execute(("select UID from Users where Email = %s"), json_data['email'])
+        userID = int(cursor.fetchall()['UID'])
+        cursor.close()
 
-        cursor.execute(query)
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(("select MID, Name from LM_Module"))
         result = cursor.fetchall()
         cursor.close()
+        
+        for item in result:
+            cursor = cnx.cursor()
+            cursor.execute(("select count(*) from Progress where UID = %s and MID = %s"), (userID, int(item['MID'])))
+            item["completed"] =  cursor.fetchall()
+            cursor.close()
+
+            cursor = cnx.cursor()
+            cursor.execute(("select count(*) from LM_Submodule where MID = %s"), (int(item['MID'])))
+            item["totalSubmodules"] = cursor.fetchall()
+            cursor.close()
+            
         return json.loads(json.dumps(result))
 
 class Content(Resource):

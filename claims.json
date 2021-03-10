@@ -1,0 +1,14 @@
+{
+    "sub": "e76396b1-713c-477f-a116-e11f63951ab9",
+    "aud": "o4uoksbrsfa78eo644tpf20um",
+    "email_verified": True,
+    "event_id": "ee039a7d-8124-4397-a818-440a4321ed3b",
+    "token_use": "id",
+    "auth_time": 1614968666,
+    "iss": "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_AdDJsuC6f",
+    "name": "Trevor",
+    "cognito:username": "e76396b1-713c-477f-a116-e11f63951ab9",
+    "exp": 1615344793,
+    "iat": 1615341193,
+    "email": "trevor.a.wilde@gmail.com"
+}
