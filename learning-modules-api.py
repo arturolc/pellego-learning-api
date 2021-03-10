@@ -18,6 +18,10 @@ app = Flask(__name__)
 api = Api(app)
 publickKeyUrl = "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_AdDJsuC6f/.well-known/jwks.json"
 
+region = 'us-west-2'
+userpool_id = 'us-west-2_AdDJsuC6f'
+app_client_id = 'o4uoksbrsfa78eo644tpf20um'
+keys_url = 'https://cognito-idp.{0}.amazonaws.com/{1}/.well-known/jwks.json'.format(region, userpool_id)
 
 def reconnect():
     # do a simple query to check if MySQL connection is open
@@ -29,10 +33,6 @@ def reconnect():
     except:
         cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
-region = 'us-west-2'
-userpool_id = 'us-west-2_AdDJsuC6f'
-app_client_id = 'o4uoksbrsfa78eo644tpf20um'
-keys_url = 'https://cognito-idp.{0}.amazonaws.com/{1}/.well-known/jwks.json'.format(region, userpool_id)
 # instead of re-downloading the public keys every time
 # we download them only on cold start
 # https://aws.amazon.com/blogs/compute/container-reuse-in-lambda/
@@ -80,10 +80,15 @@ def verifyToken(token):
     print(claims)
     return claims
 
+parser = reqparse.RequestParser()
 
 class LearningModules(Resource):
-    def get(self):
-        verifyToken()
+    def post(self):
+        json_data = request.get_json(force=True)
+        res = verifyToken(json_data['token'])
+        if res is False:
+            return 401
+            
         reconnect()
         query = ("select MID, Name from LM_Module")
         cursor = cnx.cursor(dictionary=True)
