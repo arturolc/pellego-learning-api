@@ -55,29 +55,29 @@ class Description(Resource):
         return json.loads(json.dumps(result))
 
 #Get the introduction module based on the learning module name
-class Intro(Resoure):
+class Intro(Resource):
       def get(self, Name):
-           try:
+          try:
             cursor = cnx.cursor(dictionary=True)
             cursor.execute("Select 1")
             cursor.fetchall()
             cursor.close()
-        except:
+          except:
             cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
             
-        query = ("Select Header, Content from LM_Intro natural join LM_Module where Name=%s")
-        cursor = cnx.cursor(dictionary=True)
+          query = ("Select Header, Content from LM_Intro natural join LM_Module where Name=%s")
+          cursor = cnx.cursor(dictionary=True)
 
-        cursor.execute(query, (Name,))
-        result = cursor.fetchall()
-        cursor.close()
-        return json.loads(json.dumps(result))
+          cursor.execute(query, (Name,))
+          result = cursor.fetchall()
+          cursor.close()
+          return json.loads(json.dumps(result))
 
 
 api.add_resource(LearningModules, "/modules")
-api.add_resource(Description, "/modules/content/<string:Name>")
+api.add_resource(Description, "/modules/description/<string:Name>")
 api.add_resource(Intro, "/modules/intro/<string:Name>")
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000")
+    app.run(host="0.0.0.0", port="5001")
