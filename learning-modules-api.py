@@ -9,11 +9,10 @@ from flask_restful import Resource, Api
 import mysql.connector
 import json
 import time
-import requests
+import urllib.request
 from jose import jwk, jwt
 from jose.utils import base64url_decode
 
-#urllib3, idna, certifi, chardet, requests
 cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 app = Flask(__name__)
 api = Api(app)
@@ -30,19 +29,16 @@ def reconnect():
     except:
         cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
-region = 'us-west-2:'
+region = 'us-west-2'
 userpool_id = 'us-west-2_AdDJsuC6f'
 app_client_id = '589drggbikvfufkiogvrjruvgb'
 keys_url = 'https://cognito-idp.{0}.amazonaws.com/{1}/.well-known/jwks.json'.format(region, userpool_id)
 # instead of re-downloading the public keys every time
 # we download them only on cold start
 # https://aws.amazon.com/blogs/compute/container-reuse-in-lambda/
-r = requests.get(keys_url)
-keys = json.loads(r.decode('utf-8'))['keys']
-
-# with requests.get(keys_url) as f:
-#   response = f.
-# keys = json.loads(response.decode('utf-8'))['keys']
+with urllib.request.urlopen(keys_url) as f:
+  response = f.read()
+keys = json.loads(response.decode('utf-8'))['keys']
 
 def verifyToken():
     token = "eyJraWQiOiJKMmE1WExBSFdwaVFZbEZ6cEF5TVFcL0dUTXNmdWRxM1g1Y2U0cGwxeEttST0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJlNzYzOTZiMS03MTNjLTQ3N2YtYTExNi1lMTFmNjM5NTFhYjkiLCJhdWQiOiJvNHVva3NicnNmYTc4ZW82NDR0cGYyMHVtIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiZWUwMzlhN2QtODEyNC00Mzk3LWE4MTgtNDQwYTQzMjFlZDNiIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2MTQ5Njg2NjYsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX0FkREpzdUM2ZiIsIm5hbWUiOiJUcmV2b3IiLCJjb2duaXRvOnVzZXJuYW1lIjoiZTc2Mzk2YjEtNzEzYy00NzdmLWExMTYtZTExZjYzOTUxYWI5IiwiZXhwIjoxNjE1MzI2NzMxLCJpYXQiOjE2MTUzMjMxMzEsImVtYWlsIjoidHJldm9yLmEud2lsZGVAZ21haWwuY29tIn0.fsBCd-ZAuPtIWCBljUy3zazaS76ZFHmmxy41vVUszCEg1rU8UUUKAvRLtSrDWJJ9BqCJ4_LxlP7pyjBOWgQiRT32JY6InBEUh-BhC5mSUGxHuzncH1IE8oEKoOnEL6oG0q9iA1LCwVKD1PmjkTh67Xh_zcHh0YMVEAr0AeG1_EAPhlk93loqWqyhWLLIdpKsN2dJe22h4OgKvVpPyuUVK0oCcbtswYdXx1d8Ah0_XxilCxduDeKd_T_Pcb7WJPKOuq8wTBFA9ue_39hVVtAwhXPG9AwfLsuVhusMM8VvgmYiruFVYlVp69QyUjl_MAIsmadtPDmEdtBIBSGXFyBhFg"
