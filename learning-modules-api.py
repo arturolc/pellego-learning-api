@@ -87,7 +87,7 @@ class LearningModules(Resource):
         json_data = request.get_json(force=True)
         res = verifyToken(json_data['token'])
         if res is False:
-            return "". 401
+            return "", 401
 
         reconnect()
         query = ("select MID, Name from LM_Module")
