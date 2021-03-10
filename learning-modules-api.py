@@ -8,6 +8,10 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 import mysql.connector
 import json
+import time
+import urllib.request
+from jose import jwk, jwt
+from jose.utils import base64url_decode
 
 cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 app = Flask(__name__)
