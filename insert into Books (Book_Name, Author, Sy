@@ -1,0 +1,20 @@
+insert into Books (Book_Name, Author, Synopsis, Book_Url, Image_Url)
+values("Harry Potter and the Sorcerer's Stone", "J. K. Rowling", 
+"", 
+"https://pellego-library.s3-us-west-1.amazonaws.com/hp1/hp1.pdf", 
+"https://pellego-library.s3-us-west-1.amazonaws.com/hp1/hp1.png")
+
+
+
+
+insert into Books (Book_Name, Author, Synopsis, Book_Url, Image_Url)
+values("The 7 Habits of Highly Effective People", "Stephen Covey", 
+"During his 25 years of working with successful individuals in business, universities, and relationship settings, Stephen Covey discovered that high-achievers were often plagued with a sense of emptiness. In an attempt to understand why, he read several self-improvement, self-help, and popular psychology books written over the past 200 years. It was here that he noticed a stark historical contrast between two types of success. 
+
+Before the First World War, success was attributed to ethics of character. This included characteristics such as humility, fidelity, integrity, courage, and justice. However, after the war, there was a shift to what Covey refers to as the “Personality Ethic.” Here, success was attributed as a function of personality, public image, behaviors, and skills. Yet, these were just shallow, quick successes, overlooking the deeper principles of life.
+
+Covey argues it’s your character that needs to be cultivated to achieve sustainable success, not your personality. What we are says far more than what we say or do. The “Character Ethic” is based upon a series of principles. Covey claims that these principles are self-evident and endure in most religious, social, and ethical systems. They have universal application. When you value the correct principles, you see reality as it truly is. This is the foundation of his bestselling book, The 7 Habits of Highly Effective People.
+
+", 
+"https://pellego-library.s3-us-west-1.amazonaws.com/Stephen+R.+Covey+-+The+7+Habits+of+Highly+Effective+People-Free+Press+(1990).pdf", 
+"https://pellego-library.s3-us-west-1.amazonaws.com/covey-7-habits.png")

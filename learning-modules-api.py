@@ -12,18 +12,22 @@ import json
 cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 app = Flask(__name__)
 api = Api(app)
+publickKeyUrl = "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_AdDJsuC6f/.well-known/jwks.json"
+
+
+def reconnect():
+    # do a simple query to check if MySQL connection is open
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute("Select 1")
+        cursor.fetchall()
+        cursor.close()
+    except:
+        cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
 class LearningModules(Resource):
     def get(self):
-        # do a simple query to check if MySQL connection is open
-        try:
-            cursor = cnx.cursor(dictionary=True)
-            cursor.execute("Select 1")
-            cursor.fetchall()
-            cursor.close()
-        except:
-            cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
-
+        reconnect()
         query = ("select MID, Name from LM_Module")
         cursor = cnx.cursor(dictionary=True)
 
@@ -34,14 +38,7 @@ class LearningModules(Resource):
 
 class Content(Resource):
     def get(self, module_id):
-        # do a simple query to check if MySQL connection is open
-        try:
-            cursor = cnx.cursor(dictionary=True)
-            cursor.execute("Select 1")
-            cursor.fetchall()
-            cursor.close()
-        except:
-            cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
+        reconnect()
             
         query = ("select MID, Name, Tutorial from LM_Module where MID = %s")
         cursor = cnx.cursor(dictionary=True)
