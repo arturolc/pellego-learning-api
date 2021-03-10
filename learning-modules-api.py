@@ -93,7 +93,7 @@ class LearningModules(Resource):
         reconnect()
         
         cursor = cnx.cursor(dictionary=True)
-        cursor.execute(("select UID from Users where Email = %s"), json_data['email'])
+        cursor.execute(("select UID from Users where Email = %s"), res['email'])
         userID = int(cursor.fetchall()['UID'])
         cursor.close()
 
