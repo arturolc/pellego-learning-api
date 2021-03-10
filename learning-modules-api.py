@@ -5,7 +5,7 @@ Learning Modules API
 """
 #!/usr/bin/python3
 from flask import Flask, request
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 import mysql.connector
 import json
 import time
@@ -88,7 +88,7 @@ class LearningModules(Resource):
         res = verifyToken(json_data['token'])
         if res is False:
             return 401
-            
+
         reconnect()
         query = ("select MID, Name from LM_Module")
         cursor = cnx.cursor(dictionary=True)
