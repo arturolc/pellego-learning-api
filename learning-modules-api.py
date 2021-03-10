@@ -31,7 +31,7 @@ def reconnect():
 
 region = 'us-west-2'
 userpool_id = 'us-west-2_AdDJsuC6f'
-app_client_id = '589drggbikvfufkiogvrjruvgb'
+app_client_id = 'o4uoksbrsfa78eo644tpf20um'
 keys_url = 'https://cognito-idp.{0}.amazonaws.com/{1}/.well-known/jwks.json'.format(region, userpool_id)
 # instead of re-downloading the public keys every time
 # we download them only on cold start
@@ -40,8 +40,7 @@ with urllib.request.urlopen(keys_url) as f:
   response = f.read()
 keys = json.loads(response.decode('utf-8'))['keys']
 
-def verifyToken():
-    token = "eyJraWQiOiJKMmE1WExBSFdwaVFZbEZ6cEF5TVFcL0dUTXNmdWRxM1g1Y2U0cGwxeEttST0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJlNzYzOTZiMS03MTNjLTQ3N2YtYTExNi1lMTFmNjM5NTFhYjkiLCJhdWQiOiJvNHVva3NicnNmYTc4ZW82NDR0cGYyMHVtIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiZWUwMzlhN2QtODEyNC00Mzk3LWE4MTgtNDQwYTQzMjFlZDNiIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2MTQ5Njg2NjYsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX0FkREpzdUM2ZiIsIm5hbWUiOiJUcmV2b3IiLCJjb2duaXRvOnVzZXJuYW1lIjoiZTc2Mzk2YjEtNzEzYy00NzdmLWExMTYtZTExZjYzOTUxYWI5IiwiZXhwIjoxNjE1MzI2NzMxLCJpYXQiOjE2MTUzMjMxMzEsImVtYWlsIjoidHJldm9yLmEud2lsZGVAZ21haWwuY29tIn0.fsBCd-ZAuPtIWCBljUy3zazaS76ZFHmmxy41vVUszCEg1rU8UUUKAvRLtSrDWJJ9BqCJ4_LxlP7pyjBOWgQiRT32JY6InBEUh-BhC5mSUGxHuzncH1IE8oEKoOnEL6oG0q9iA1LCwVKD1PmjkTh67Xh_zcHh0YMVEAr0AeG1_EAPhlk93loqWqyhWLLIdpKsN2dJe22h4OgKvVpPyuUVK0oCcbtswYdXx1d8Ah0_XxilCxduDeKd_T_Pcb7WJPKOuq8wTBFA9ue_39hVVtAwhXPG9AwfLsuVhusMM8VvgmYiruFVYlVp69QyUjl_MAIsmadtPDmEdtBIBSGXFyBhFg"
+def verifyToken(token):
     # get the kid from the headers prior to verification
     headers = jwt.get_unverified_headers(token)
     kid = headers['kid']
