@@ -105,12 +105,12 @@ class LearningModules(Resource):
         for item in result:
             cursor = cnx.cursor()
             cursor.execute(("select count(*) from ProgressCompleted where UID = %s and MID = %s"), (userID, int(item['MID'])))
-            item["completed"] =  int(cursor.fetchall()[0])
+            item["completed"] =  cursor.fetchall()[0][0]
             cursor.close()
 
             cursor = cnx.cursor()
             cursor.execute(("select count(*) from LM_Submodule where MID = %s"), (int(item['MID']),))
-            item["totalSubmodules"] = int(cursor.fetchall()[0])
+            item["totalSubmodules"] = cursor.fetchall()[0][0]
             cursor.close()
             
         return json.loads(json.dumps(result))
