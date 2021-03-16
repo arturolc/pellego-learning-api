@@ -116,7 +116,7 @@ class LearningModules(Resource):
         return json.loads(json.dumps(result))
 
 class Content(Resource):
-    def get(self, module_id):
+    def post(self, module_id):
         reconnect()
             
         query = ("select MID, Name, Tutorial from LM_Module where MID = %s")
