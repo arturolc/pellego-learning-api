@@ -119,7 +119,7 @@ class Content(Resource):
     def post(self, module_id):
         reconnect()
             
-        query = ("select MID, Name, Tutorial from LM_Module where MID = %s")
+        query = ("select MID, Name, Text from LM_Module where MID = %s")
         cursor = cnx.cursor(dictionary=True)
 
         cursor.execute(query, (module_id,))
