@@ -13,7 +13,7 @@ import urllib.request
 from jose import jwk, jwt
 from jose.utils import base64url_decode
 
-cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
+
 app = Flask(__name__)
 api = Api(app)
 publickKeyUrl = "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_AdDJsuC6f/.well-known/jwks.json"
@@ -23,15 +23,15 @@ userpool_id = 'us-west-2_AdDJsuC6f'
 app_client_id = 'o4uoksbrsfa78eo644tpf20um'
 keys_url = 'https://cognito-idp.{0}.amazonaws.com/{1}/.well-known/jwks.json'.format(region, userpool_id)
 
-def reconnect():
-    # do a simple query to check if MySQL connection is open
-    try:
-        cursor = cnx.cursor(dictionary=True)
-        cursor.execute("Select 1")
-        cursor.fetchall()
-        cursor.close()
-    except:
-        cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
+# def reconnect():
+#     # do a simple query to check if MySQL connection is open
+#     try:
+#         cursor = cnx.cursor(dictionary=True)
+#         cursor.execute("Select 1")
+#         cursor.fetchall()
+#         cursor.close()
+#     except:
+#         cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
 # instead of re-downloading the public keys every time
 # we download them only on cold start
@@ -90,7 +90,7 @@ class LearningModules(Resource):
         #if res is False:
         #    return "401 Unathorized", 401
         res = request.get_json(force=True) 
-        reconnect()
+        cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
         
         cursor = cnx.cursor(dictionary=True)
         cursor.execute(("select UID from Users where Email = %s"), (res['email'],))
@@ -112,12 +112,13 @@ class LearningModules(Resource):
             cursor.execute(("select count(*) from LM_Submodule where MID = %s"), (int(item['MID']),))
             item["totalSubmodules"] = int(cursor.fetchall()[0][0])
             cursor.close()
-            
+        
+        cnx.close()
         return json.loads(json.dumps(result))
 
 class Content(Resource):
     def post(self, module_id):
-        reconnect()
+        cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
             
         query = ("select MID, Name, Description from LM_Module where MID = %s")
         cursor = cnx.cursor(dictionary=True)
@@ -125,6 +126,7 @@ class Content(Resource):
         cursor.execute(query, (module_id,))
         result = cursor.fetchall()
         cursor.close()
+        cnx.close()
         return json.loads(json.dumps(result))
 
 
