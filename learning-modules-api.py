@@ -126,6 +126,13 @@ class Content(Resource):
         cursor.execute(query, (module_id,))
         result = cursor.fetchall()
         cursor.close()
+
+        query = ("select SMID, Name from LM_Submodule where MID = %s")
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(query, (module_id,))
+        result['Submodules'] = cursor.fetchall()
+        cursor.close()
+        
         cnx.close()
         return json.loads(json.dumps(result))
 
