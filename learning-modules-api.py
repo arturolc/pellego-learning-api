@@ -23,15 +23,6 @@ userpool_id = 'us-west-2_AdDJsuC6f'
 app_client_id = 'o4uoksbrsfa78eo644tpf20um'
 keys_url = 'https://cognito-idp.{0}.amazonaws.com/{1}/.well-known/jwks.json'.format(region, userpool_id)
 
-# def reconnect():
-#     # do a simple query to check if MySQL connection is open
-#     try:
-#         cursor = cnx.cursor(dictionary=True)
-#         cursor.execute("Select 1")
-#         cursor.fetchall()
-#         cursor.close()
-#     except:
-#         cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
 # instead of re-downloading the public keys every time
 # we download them only on cold start
@@ -136,9 +127,21 @@ class Content(Resource):
         cnx.close()
         return json.loads(json.dumps(result))
 
+class Submodule(Resource):
+    def post(self, module_id, submodule_id):
+        cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
+
+        query = ("select SMID, Name, Text from LM_Submodule where MID = %s and SMID = %s")
+        cursor = cnx.cursor(dictionary=True)
+
+        cursor.execute(query, (module_id, submodule_id))
+        result = cursor.fetchall()
+        cursor.close()
+        cnx.close()
+        return json.loads(json.dumps(result))
 
 api.add_resource(LearningModules, "/modules")
-api.add_resource(Content, "/modules/content/<int:module_id>")
-
+api.add_resource(Content, "/modules/<int:module_id>/content")
+api.add_resource(Submodule, "/modules/<int:module_id>/submodule/<int:submodule_id>")
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
