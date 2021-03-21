@@ -89,7 +89,7 @@ class LearningModules(Resource):
         cursor.close()
 
         cursor = cnx.cursor(dictionary=True)
-        cursor.execute(("select MID, Name from LM_Module"))
+        cursor.execute(("select MID, Name, Icon from LM_Module"))
         result = cursor.fetchall()
         cursor.close()
         
