@@ -95,7 +95,7 @@ class LearningModules(Resource):
         
         for item in result:
             cursor = cnx.cursor()
-            cursor.execute(("select count(*) from ProgressCompleted where UID = %s and MID = %s"), (userID, int(item['MID'])))
+            cursor.execute(("select count(*) from ProgressCompleted where UID = %s and SMID in (select SMID from LM_Submodule where MID = %s)"), (userID, int(item['MID'])))
             item["completed"] =  int(cursor.fetchall()[0][0])
             cursor.close()
 
@@ -134,7 +134,7 @@ class Submodule(Resource):
         query = ("select SMID, Name, Text from LM_Submodule where MID = %s and SMID = %s")
         cursor = cnx.cursor(dictionary=True)
 
-        cursor.execute(query, (module_id, submodule_id))
+        cursor.execute(query, (module_id, submodule_id,))
         result = cursor.fetchall()
         cursor.close()
         cnx.close()
