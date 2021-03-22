@@ -133,6 +133,7 @@ class Submodules(Resource):
 
         query = ("select Header, Content from LM_Intro where MID = %s")
         cursor = cnx.cursor(dictionary=True)
+        cursor.execute(query, (module_id,))
         introResult = cursor.fetchall()
         cursor.close();
 
