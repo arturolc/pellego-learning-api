@@ -131,7 +131,6 @@ class Submodule(Resource):
     def post(self, module_id, submodule_id):
         cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
-        /*Attach intro details*/
         query = ("select MID, Header, Content from LM_Intro where MID = %s")
         cursor = cnx.cursor(dictionary=True)
         result = cursor.fetchall()
