@@ -131,12 +131,19 @@ class Submodule(Resource):
     def post(self, module_id, submodule_id):
         cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
-        query = ("select SMID, Name, Text from LM_Submodule where MID = %s and SMID = %s")
+        /*Attach intro details*/
+        query = ("select MID, Header, Content from LM_Intro where MID = %s")
+        cursor = cnx.cursor(dictionary=True)
+        result = cursor.fetchall()
+        cursor.close();
+
+        query = ("select SMID, Name, Subheader, Text from LM_Submodule where MID = %s && SMID = %s")
         cursor = cnx.cursor(dictionary=True)
 
         cursor.execute(query, (module_id, submodule_id,))
         result = cursor.fetchall()
         cursor.close()
+
         cnx.close()
         return json.loads(json.dumps(result))
 
