@@ -118,7 +118,7 @@ class Content(Resource):
         result = cursor.fetchall()
         cursor.close()
 
-        query = ("select SMID, Name, Subheader from LM_Submodule where MID = %s")
+        query = ("select Name, Subheader from LM_Submodule where MID = %s")
         cursor = cnx.cursor(dictionary=True)
         cursor.execute(query, (module_id,))
         result[0]["Submodules"] = cursor.fetchall()
