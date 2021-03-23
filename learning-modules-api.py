@@ -142,7 +142,7 @@ class Submodules(Resource):
 
         cursor.execute(query, (module_id,))
         result = cursor.fetchall()
-        result[0]["Text"] = introResult;
+        result[0]["Content"] = introResult;
         cursor.close()
 
         cnx.close()
