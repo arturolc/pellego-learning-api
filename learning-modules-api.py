@@ -159,11 +159,12 @@ class Quizzes(Resource):
         result = cursor.fetchall()
         cursor.close()
 
-        query = ("select QUID, Answer, Correct from Answers where SMID = %s")
-        cursor = cnx.cursor(dictionary=True)
-        cursor.execute(query, (submodule_id,))
-        result[0]["Answers"] = cursor.fetchall()
-        cursor.close()
+        for item in range(1,5)
+            query = ("select QUID, Answer, Correct from Answers where SMID = %s and QUID = %s")
+            cursor = cnx.cursor(dictionary=True)
+            cursor.execute(query, (submodule_id, item,)
+            item["Answers"] =  cursor.fetchall()
+            cursor.close()
 
         cnx.close()
         return json.loads(json.dumps(result))
