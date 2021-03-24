@@ -148,7 +148,7 @@ class Submodules(Resource):
         cnx.close()
         return json.loads(json.dumps(result))
 
-Class Quizzes(Resource):
+class Quizzes(Resource):
     def post(self, submodule_id):
         cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
