@@ -159,7 +159,7 @@ class Quizzes(Resource):
         result = cursor.fetchall()
         cursor.close()
 
-        for item in range(1,5)
+        for item in range(1,5):
             query = ("select QUID, Answer, Correct from Answers where SMID = %s and QUID = %s")
             cursor = cnx.cursor(dictionary=True)
             cursor.execute(query, (submodule_id, item,)
