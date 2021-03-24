@@ -163,7 +163,7 @@ class Quizzes(Resource):
             query = ("select QUID, Answer, Correct from Answers where SMID = %s and QUID = %s")
             cursor = cnx.cursor(dictionary=True)
             cursor.execute(query, (submodule_id, item, ))
-            result[item]["Answers"] = cursor.fetchall()
+            result[item - 1]["Answers"] = cursor.fetchall()
             cursor.close()
 
         cnx.close()
