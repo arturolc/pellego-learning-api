@@ -149,7 +149,7 @@ class Submodules(Resource):
         return json.loads(json.dumps(result))
 
 class Quizzes(Resource):
-    def post(self, submodule_id):
+    def post(self, module_id, submodule_id):
         cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
         query = ("select QUID, Question from Questions where SMID = %s")
