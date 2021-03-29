@@ -162,7 +162,7 @@ class Quizzes(Resource):
         for item in range(0,4):
             query = ("select QUID, Answer, Correct from Answers where SMID = %s and QUID = %s")
             cursor = cnx.cursor(dictionary=True)
-            cursor.execute(query, (submodule_id, item + int(quiz_id), ))
+            cursor.execute(query, (submodule_id, item + quiz_id, ))
             result[item]["Answers"] = cursor.fetchall()
             cursor.close()
 
@@ -172,6 +172,6 @@ class Quizzes(Resource):
 api.add_resource(LearningModules, "/modules")
 api.add_resource(Content, "/modules/<int:module_id>/content")
 api.add_resource(Submodules, "/modules/<int:module_id>/submodules")
-api.add_resource(Quizzes, "/modules/<int:module_id>/submodules/<int:submodule_id>/quizzes")
+api.add_resource(Quizzes, "/modules/<int:module_id>/submodules/<int:submodule_id>/quizzes/<int:quiz_id>")
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
