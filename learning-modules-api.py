@@ -149,7 +149,7 @@ class Submodules(Resource):
         return json.loads(json.dumps(result))
 
 class Quizzes(Resource):
-    def post(self, module_id, submodule_id):
+    def post(self, module_id, submodule_id, quiz_id):
         cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
         query = ("select QUID, Question from Questions where SMID = %s")
@@ -159,10 +159,10 @@ class Quizzes(Resource):
         result = cursor.fetchall()
         cursor.close()
 
-        for item in range(1,5):
+        for item in range(0,4):
             query = ("select QUID, Answer, Correct from Answers where SMID = %s and QUID = %s")
             cursor = cnx.cursor(dictionary=True)
-            cursor.execute(query, (submodule_id, item, ))
+            cursor.execute(query, (submodule_id, quiz_id + item, ))
             result[item - 1]["Answers"] = cursor.fetchall()
             cursor.close()
 
