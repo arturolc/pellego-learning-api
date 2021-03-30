@@ -108,7 +108,13 @@ class LearningModules(Resource):
         return json.loads(json.dumps(result))
 
     def post(self, module_id, complete_number):
-        cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
+        #json_data = request.get_json(force=True)
+            #
+            #res = verifyToken(json_data['token'])
+            #if res is False:
+            #    return "401 Unauthorized", 401
+            res = request.get_json(force=True)
+            cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
         query = ("Update LM_Module SET Complete = %s where MID = %s")
         cursor = cnx.cursor(dictionary=True)
@@ -179,7 +185,7 @@ class Quizzes(Resource):
         return json.loads(json.dumps(result))
 
 api.add_resource(LearningModules, "/modules")
-api.add_resource(LearningModules, "/modules/<int:complete_number>")
+api.add_resource(LearningModules, "/modules/<int:module_id>/<int:complete_number>")
 api.add_resource(Content, "/modules/<int:module_id>/content")
 api.add_resource(Submodules, "/modules/<int:module_id>/submodules")
 api.add_resource(Quizzes, "/modules/<int:module_id>/submodules/<int:submodule_id>/quizzes/<int:quiz_id>")
