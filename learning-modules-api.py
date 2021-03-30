@@ -109,16 +109,15 @@ class LearningModules(Resource):
 
     def post(self, module_id, complete_number):
         #json_data = request.get_json(force=True)
-            #
-            #res = verifyToken(json_data['token'])
-            #if res is False:
-            #    return "401 Unauthorized", 401
-            res = request.get_json(force=True)
-            cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
+        #
+        #res = verifyToken(json_data['token'])
+        #if res is False:
+        #    return "401 Unauthorized", 401
+        res = request.get_json(force=True)
+        cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
-        query = ("Update LM_Module SET Complete = %s where MID = %s")
         cursor = cnx.cursor(dictionary=True)
-
+        query = ("Update LM_Module SET Complete = %s where MID = %s")
         cursor.execute(query, (complete_number, module_id, ))
         cnx.close()
 
