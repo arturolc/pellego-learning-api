@@ -73,6 +73,10 @@ def verifyToken(token):
 
 parser = reqparse.RequestParser()
 
+
+        
+
+
 class LearningModules(Resource):
     def post(self):
         #json_data = request.get_json(force=True)
@@ -107,6 +111,51 @@ class LearningModules(Resource):
         cnx.close()
         return json.loads(json.dumps(result))
 
+class AllContent(Resource):
+    def post(self):
+        #json_data = request.get_json(force=True)
+        #
+        #res = verifyToken(json_data['token'])        
+        #if res is False:
+        #    return "401 Unathorized", 401
+        res = request.get_json(force=True) 
+        cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
+        
+        ret = {}
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(("select * from LM_Module"))
+        ret["modules"] = cursor.fetchall()
+        cursor.close()
+        
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(("select * from LM_Intro"))
+        ret["intros"] = cursor.fetchall()
+        cursor.close()
+
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(("select * from LM_Submodule"))
+        ret["submodule"] = cursor.fetchall()
+        cursor.close()
+
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(("select * from LM_Quiz"))
+        ret["quizzes"] = cursor.fetchall()
+        cursor.close()
+
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(("select * from Questions"))
+        ret["questions"] = cursor.fetchall()
+        cursor.close()
+
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute("select * from Answers")
+        ret["answers"] = cursor.fetchall()
+        cursor.close()
+
+        cnx.close()
+        return json.loads(json.dumps(ret))
+
+
 class Content(Resource):
     def post(self, module_id):
         cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
@@ -140,8 +189,11 @@ class Submodule(Resource):
         cnx.close()
         return json.loads(json.dumps(result))
 
+
 api.add_resource(LearningModules, "/modules")
+api.add_resource(AllContent, "/modules/allcontent/")
 api.add_resource(Content, "/modules/<int:module_id>/content")
 api.add_resource(Submodule, "/modules/<int:module_id>/submodule/<int:submodule_id>")
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
