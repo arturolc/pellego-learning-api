@@ -138,11 +138,6 @@ class AllContent(Resource):
         cursor.close()
 
         cursor = cnx.cursor(dictionary=True)
-        cursor.execute(("select * from LM_Quiz"))
-        ret["quizzes"] = cursor.fetchall()
-        cursor.close()
-
-        cursor = cnx.cursor(dictionary=True)
         cursor.execute(("select * from Questions"))
         ret["questions"] = cursor.fetchall()
         cursor.close()
