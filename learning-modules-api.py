@@ -83,7 +83,7 @@ class LearningModules(Resource):
         #
         #res = verifyToken(json_data['token'])        
         #if res is False:
-        #    return "401 Unathorized", 401
+        #    return "401 Unauthorized", 401
         res = request.get_json(force=True) 
         cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
         
@@ -167,7 +167,7 @@ class Content(Resource):
         result = cursor.fetchall()
         cursor.close()
 
-        query = ("select SMID, Name, Subheader from LM_Submodule where MID = %s")
+        query = ("select Name, Subheader from LM_Submodule where MID = %s")
         cursor = cnx.cursor(dictionary=True)
         cursor.execute(query, (module_id,))
         result[0]["Submodules"] = cursor.fetchall()
@@ -176,16 +176,45 @@ class Content(Resource):
         cnx.close()
         return json.loads(json.dumps(result))
 
-class Submodule(Resource):
-    def post(self, module_id, submodule_id):
+class Submodules(Resource):
+    def post(self, module_id):
         cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
 
-        query = ("select SMID, Name, Text from LM_Submodule where MID = %s and SMID = %s")
+        query = ("select Header, Content from LM_Intro where MID = %s")
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(query, (module_id,))
+        introResult = cursor.fetchall()
+        cursor.close();
+
+        query = ("select Name, Subheader, Text from LM_Submodule where MID = %s")
         cursor = cnx.cursor(dictionary=True)
 
-        cursor.execute(query, (module_id, submodule_id,))
+        cursor.execute(query, (module_id,))
+        result = cursor.fetchall()
+        result[0]["Content"] = introResult;
+        cursor.close()
+
+        cnx.close()
+        return json.loads(json.dumps(result))
+
+class Quizzes(Resource):
+    def post(self, module_id, submodule_id, quiz_id):
+        cnx = mysql.connector.connect(user='admin', password='capstone', host='pellego-db.cdkdcwucys6e.us-west-2.rds.amazonaws.com', database='pellego_database')
+
+        query = ("select QUID, Question from Questions where SMID = %s")
+        cursor = cnx.cursor(dictionary=True)
+
+        cursor.execute(query, (submodule_id, ))
         result = cursor.fetchall()
         cursor.close()
+
+        for item in range(0,4):
+            query = ("select QUID, Answer, Correct from Answers where SMID = %s and QUID = %s")
+            cursor = cnx.cursor(dictionary=True)
+            cursor.execute(query, (submodule_id, item + quiz_id, ))
+            result[item]["Answers"] = cursor.fetchall()
+            cursor.close()
+
         cnx.close()
         return json.loads(json.dumps(result))
 
@@ -193,7 +222,12 @@ class Submodule(Resource):
 api.add_resource(LearningModules, "/modules")
 api.add_resource(AllContent, "/modules/allcontent/")
 api.add_resource(Content, "/modules/<int:module_id>/content")
+<<<<<<< HEAD
 api.add_resource(Submodule, "/modules/<int:module_id>/submodule/<int:submodule_id>")
 
+=======
+api.add_resource(Submodules, "/modules/<int:module_id>/submodules")
+api.add_resource(Quizzes, "/modules/<int:module_id>/submodules/<int:submodule_id>/quizzes/<int:quiz_id>")
+>>>>>>> 863a1b1ee8a67f882f8e7c09797ac9f3dc9272cf
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
