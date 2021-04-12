@@ -222,12 +222,9 @@ class Quizzes(Resource):
 api.add_resource(LearningModules, "/modules")
 api.add_resource(AllContent, "/modules/allcontent/")
 api.add_resource(Content, "/modules/<int:module_id>/content")
-<<<<<<< HEAD
-api.add_resource(Submodule, "/modules/<int:module_id>/submodule/<int:submodule_id>")
-
-=======
 api.add_resource(Submodules, "/modules/<int:module_id>/submodules")
 api.add_resource(Quizzes, "/modules/<int:module_id>/submodules/<int:submodule_id>/quizzes/<int:quiz_id>")
->>>>>>> 863a1b1ee8a67f882f8e7c09797ac9f3dc9272cf
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
