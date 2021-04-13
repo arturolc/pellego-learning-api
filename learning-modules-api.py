@@ -204,7 +204,7 @@ class Quizzes(Resource):
         cursor.close()
 
         for el in result:
-            query = ("select QUID, Answer, Correct from Answers where SMID = %s and QUID = %s")
+            query = ("select Answer, Correct from Answers where SMID = %s and QUID = %s")
             cursor = cnx.cursor(dictionary=True)
             cursor.execute(query, (submodule_id, el["QUID"]))
             el["Answers"] = cursor.fetchall() 
