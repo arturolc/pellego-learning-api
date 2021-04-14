@@ -218,7 +218,7 @@ api.add_resource(LearningModules, "/modules")
 api.add_resource(AllContent, "/modules/allcontent")
 api.add_resource(Content, "/modules/<int:module_id>/content")
 api.add_resource(Submodules, "/modules/<int:module_id>/submodules")
-api.add_resource(Quizzes, "/submodules/<int:submodule_id>/quizzes")
+api.add_resource(Quizzes, "/modules/submodule/<int:submodule_id>/quizzes")
 
 
 if __name__ == "__main__":
